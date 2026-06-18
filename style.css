@@ -1,350 +1,170 @@
+/* style.css */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body, html {
-    width: 100%;
-    height: 100%;
+body {
+    background: #0a0a0a;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
     overflow: hidden;
-    background-color: #030308;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    color: #ffffff;
+    height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
-/* Moving diagonal grid background */
+/* Background effects */
 .bg-grid {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background-image: 
-        linear-gradient(rgba(0, 210, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 210, 255, 0.04) 1px, transparent 1px);
-    background-size: 60px 60px;
-    transform: rotate(-15deg);
-    animation: diagonalMove 25s linear infinite;
-    z-index: 1;
-}
-
-/* Ambient glow in the center */
-.bg-glow {
-    position: absolute;
-    width: 800px;
-    height: 800px;
-    background: radial-gradient(circle, rgba(0, 82, 212, 0.12) 0%, rgba(0,0,0,0) 70%);
-    z-index: 2;
-    pointer-events: none;
-}
-
-.presentation-container {
-    position: relative;
-    z-index: 3;
-    width: 90%;
-    max-width: 1100px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Intro Stage: Logo styling and positioning */
-.logo-wrapper {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 180px; 
-    margin-bottom: 2.5rem;
-}
-
-.logo-image {
-    height: 120px;
-    width: auto;
-    opacity: 0;
-    transform: scale(0.85);
-    animation: logoFadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: 0.2s;
-}
-
-/* Shiny overlay animation box over the logo */
-.logo-shine-box {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 120px;
-    overflow: hidden;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(0, 255, 200, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 200, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
     pointer-events: none;
-    opacity: 0;
-    animation: logoFadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: 0.2s;
 }
 
-.logo-shine-box::after {
-    content: '';
+.bg-glow {
     position: absolute;
-    top: -50%;
-    left: -150%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        to right,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0) 30%,
-        rgba(0, 210, 255, 0.3) 45%,
-        rgba(255, 255, 255, 0.6) 50%,
-        rgba(0, 210, 255, 0.3) 55%,
-        rgba(255, 255, 255, 0) 70%,
-        rgba(255, 255, 255, 0) 100%
-    );
-    transform: rotate(30deg);
-    animation: shineSweep 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    animation-delay: 1s;
-}
-
-/* Subtitle text triggered after the shine sweeps */
-.intro-text {
-    font-size: 1.4rem;
-    text-transform: uppercase;
-    letter-spacing: 0.6rem;
-    color: #00d2ff;
-    position: absolute;
-    bottom: 0;
-    opacity: 0;
-    transform: translateY(15px);
-    animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: 2.2s;
-}
-
-/* Container with Timed Roblox-style Neon Rainbow Aura Border */
-.wipe-container {
-    position: relative;
-    display: block;
-    width: 100%;
-    padding: 2.5rem;
-    background: rgba(5, 5, 15, 0.85);
-    border-radius: 16px;
-    backdrop-filter: blur(10px);
-    opacity: 0;
-    border: 3px solid transparent;
-    background-image: linear-gradient(rgba(5, 5, 15, 0.95), rgba(5, 5, 15, 0.95)), 
-                      linear-gradient(var(--rainbow-angle), #ff0055, #00ffcc, #9900ff, #ff9900, #ff0055);
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
-    animation: 
-        revealContainer 0.1s linear forwards,
-        rotateRainbowAngle 4s linear infinite,
-        auraGlowPop 1s ease-out forwards;
-    animation-delay: 3.5s, 0s, 7.8s;
-}
-
-/* Speed up rainbow aura loop cycle when browser triggers Fullscreen mode */
-body:fullscreen .wipe-container {
-    animation-duration: 0.1s, 1.3s, 1s;
-}
-
-/* Circular Wheel Loading Border Overlay Effect */
-.wipe-container::before {
-    content: '';
-    position: absolute;
-    top: -3px;
-    left: -3px;
-    right: -3px;
-    bottom: -3px;
-    border-radius: 16px;
-    background: #030308;
-    z-index: 1;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0, 255, 150, 0.15) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
     pointer-events: none;
-    clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 50% 0%);
-    animation: borderWheelReveal 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    animation-delay: 7.8s; 
+    z-index: 0;
 }
 
-/* Ensures content stays above background masks */
-.pitch-paragraph {
+.presentation-container {
     position: relative;
     z-index: 2;
-    font-size: 1.8rem;
-    line-height: 1.6;
-    font-weight: 300;
-    color: #e2e8f0;
     text-align: center;
-    display: block;
-    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
-    animation: textWipe 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    animation-delay: 3.8s;
+    max-width: 800px;
+    padding: 40px;
 }
 
-/* Key emphasis phrases sync colors directly with the changing rainbow aura */
-.wipe-container strong {
+/* Logo */
+.logo-wrapper {
+    margin-bottom: 60px;
+    position: relative;
+}
+
+.logo-image {
+    width: 180px;
+    filter: drop-shadow(0 0 30px #00ffcc);
+}
+
+.intro-text {
+    margin-top: 20px;
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #00ffcc;
+    text-shadow: 0 0 20px #00ffcc;
+}
+
+/* Rotating Rainbow Aura */
+.aura-wrapper {
+    position: relative;
     display: inline-block;
-    font-weight: 700;
-    background: linear-gradient(var(--rainbow-angle), #ff0055, #00ffcc, #9900ff, #ff9900, #ff0055);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: rotateRainbowAngle 4s linear infinite;
-    filter: drop-shadow(0 0 12px rgba(0, 255, 204, 0.5));
-}
-body:fullscreen .wipe-container strong {
-    animation-duration: 1.3s;
+    margin: 0 auto;
 }
 
-/* Highlighted placeholder styling with glowing aura colors */
-.placeholder-highlight {
-    display: inline-block;
-    font-weight: 800;
-    background: linear-gradient(var(--rainbow-angle), #ff0055, #00ffcc, #9900ff, #ff9900, #ff0055);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: rotateRainbowAngle 4s linear infinite;
-    padding: 0 4px;
-    filter: drop-shadow(0 0 15px rgba(255, 0, 85, 0.6));
-}
-body:fullscreen .placeholder-highlight {
-    animation-duration: 1.3s;
+.aura-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -25px;
+    left: -25px;
+    right: -25px;
+    bottom: -25px;
+    background: conic-gradient(
+        #ff0055, #ff9900, #ffff00, 
+        #00ffcc, #0099ff, #9900ff, 
+        #ff0055
+    );
+    border-radius: 20px;
+    animation: aura-rotate 3s linear infinite;
+    z-index: -2;
+    filter: blur(8px);
+    opacity: 0.85;
 }
 
-/* Realistic Roblox Particle Trail Engine properties */
+.aura-wrapper::after {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    background: #0a0a0a;
+    border-radius: 16px;
+    z-index: -1;
+}
+
+/* Wipe Container */
+.wipe-container {
+    position: relative;
+    background: rgba(10, 10, 10, 0.95);
+    border: 3px solid transparent;
+    border-radius: 12px;
+    padding: 35px 45px;
+    max-width: 720px;
+    margin: 0 auto;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.pitch-paragraph {
+    font-size: 1.35rem;
+    line-height: 1.65;
+    text-align: left;
+    opacity: 0;
+    animation: textWipe 4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    animation-delay: 4s;
+}
+
+@keyframes textWipe {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Particles */
 .roblox-particle {
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 10;
-    mix-blend-mode: screen;
-    animation: particleBehavior 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: particleFly 1.2s ease-out forwards;
+    z-index: 3;
 }
 
-/* Interactive trigger hint */
+@keyframes particleFly {
+    to {
+        transform: translate(var(--pX), var(--pY));
+        opacity: 0;
+    }
+}
+
+/* Click hint */
 .click-hint {
-    position: absolute;
-    bottom: -100px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.9rem;
-    letter-spacing: 0.2rem;
-    color: #334155;
-    text-transform: uppercase;
+    margin-top: 40px;
+    font-size: 1rem;
+    opacity: 0.6;
     animation: pulse 2s infinite;
 }
 
-/* Custom Property Setup for the Rainbow Rotation Engine */
-@property --rainbow-angle {
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: false;
-}
-
-/* Background Movement Animation */
-@keyframes diagonalMove {
-    0% { background-position: 0 0; }
-    100% { background-position: 1200px 600px; }
-}
-
-/* Logo Fade-in Scaling Engine */
-@keyframes logoFadeIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.85);
-        filter: blur(8px);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-        filter: blur(0);
-    }
-}
-
-/* Diagonal flare sweep timeline */
-@keyframes shineSweep {
-    0% { left: -150%; }
-    100% { left: 150%; }
-}
-
-/* Text Box Reveal helper */
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(15px);
-                filter: blur(4px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-        filter: blur(0);
-    }
-}
-
-/* Window handling visibility flashes */
-@keyframes revealContainer {
-    to { opacity: 1; }
-}
-
-/* Dynamic Border Gradient Shift Loop */
-@keyframes rotateRainbowAngle {
-    0% { --rainbow-angle: 0deg; }
-    100% { --rainbow-angle: 360deg; }
-}
-
-/* Smooth Block Wipe Layout Fix */
-@keyframes textWipe {
-    0% { clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%); }
-    100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
-}
-
-/* Clockwise angular wheel swipe to unmask the rainbow border */
-@keyframes borderWheelReveal {
-    0% {
-        clip-path: polygon(50% 50%, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
-    }
-    25% {
-        clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%);
-    }
-    50% {
-        clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 100% 100%, 100% 100%, 100% 100%);
-    }
-    75% {
-        clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 100%, 0% 100%);
-    }
-    100% {
-        clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 50% 0%);
-    }
-}
-
-/* Heavy Roblox-style aura bloom popping outward when the wheel loading completes */
-@keyframes auraGlowPop {
-    0% {
-        box-shadow: 0 0 0px rgba(0, 0, 0, 0);
-    }
-    100% {
-        box-shadow: 
-            0 0 40px rgba(255, 0, 85, 0.5),
-            0 0 80px rgba(0, 255, 204, 0.4),
-            0 0 120px rgba(153, 0, 255, 0.3),
-            inset 0 0 20px rgba(255, 255, 255, 0.05);
-    }
-}
-
-/* Particle motion paths simulation */
-@keyframes particleBehavior {
-    0% {
-        opacity: 1;
-        transform: translate(0, 0) scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(var(--pX), var(--pY)) scale(0.2);
-    }
-}
-
 @keyframes pulse {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.8; }
+    50% { opacity: 0.3; }
+}
+
+@keyframes aura-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }

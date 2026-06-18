@@ -4,40 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Epsilon Initiative Pitch</title>
-    <!-- Links your styling file directly -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div class="bg-grid"></div>
     <div class="bg-glow"></div>
-
     <div class="presentation-container">
-        <!-- Logo Section with custom timed shine overlay effects -->
+        <!-- Logo Section -->
         <div class="logo-wrapper">
             <img src="logo.webp" alt="Epsilon Logo" class="logo-image">
             <div class="logo-shine-box"></div>
             <div class="intro-text">Hello Sharks</div>
         </div>
-        
-        <!-- Main body paragraph wrapper with dynamic Roblox Rainbow Aura Border -->
-        <div class="wipe-container" id="wipeContainer">
-            <p class="pitch-paragraph">
-                Within this pitch I, the representative of <strong>Epsilon initiative</strong>, 
-                shall present our revolutionary service… 
-                <span class="placeholder-highlight">“[Placeholder]”</span>. 
-                Upon the initiation of publicly announcing the release of this extraordinary service. 
-                Epsilon industries expects a voluminous fluctuation within service purchasing rates. 
-                As evident within simulation scenarios, control groups presented enthusiastic eagerness 
-                to purchase the service, whereas contrary to other similar services.
-            </p>
+       
+        <!-- Main body paragraph wrapper with rotating rainbow aura -->
+        <div class="aura-wrapper" id="auraWrapper">
+            <div class="wipe-container" id="wipeContainer">
+                <p class="pitch-paragraph">
+                    Within this pitch I, the representative of <strong>Epsilon initiative</strong>,
+                    shall present our revolutionary service…
+                    <span class="placeholder-highlight">“[Placeholder]”</span>.
+                    Upon the initiation of publicly announcing the release of this extraordinary service.
+                    Epsilon industries expects a voluminous fluctuation within service purchasing rates.
+                    As evident within simulation scenarios, control groups presented enthusiastic eagerness
+                    to purchase the service, whereas contrary to other similar services.
+                </p>
+            </div>
         </div>
-
         <div class="click-hint">Click anywhere to go fullscreen</div>
     </div>
 
     <script>
-        // Fullscreen toggle logic on tap/click
+        // Fullscreen toggle
         document.body.addEventListener('click', () => {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(err => {
@@ -48,61 +46,52 @@
             }
         });
 
-        // Real-time particle emitter tracking along the text wipe line
+        // Start aura rotation immediately
+        // Particle effect after delay for text wipe
         setTimeout(() => {
             const container = document.getElementById('wipeContainer');
-            const totalDuration = 4000; // Matches CSS .pitch-paragraph wipe animation time (4s)
-            const tickRate = 35; // Spawn frequency in ms
+            const totalDuration = 4000;
+            const tickRate = 35;
             const startTime = Date.now();
-            
+           
             const emitter = setInterval(() => {
                 const elapsed = Date.now() - startTime;
                 if (elapsed >= totalDuration) {
                     clearInterval(emitter);
                     return;
                 }
-                
-                // Track percentage completion
+               
                 const linearProgress = elapsed / totalDuration;
-                
-                // Approximate the cubic-bezier curve shape mathematically to align particles directly on the leading wipe edge
                 const easeProgress = 1 - Math.pow(1 - linearProgress, 3);
                 const completeX = easeProgress * 100;
-                
-                // Spawn small grouping clusters per interval frame
+               
                 for (let i = 0; i < 4; i++) {
                     const spark = document.createElement('div');
                     spark.className = 'roblox-particle';
-                    
-                    // Assign positions across the height boundaries randomly
+                   
                     const randomY = Math.random() * 100;
                     spark.style.left = `${completeX}%`;
                     spark.style.top = `${randomY}%`;
-                    
-                    // Color selections matching standard hyper-vibrant Roblox tiers
+                   
                     const sparkColors = ['#ff0055', '#00ffcc', '#9900ff', '#ff9900', '#ffff00', '#ff00ff'];
                     const chosenColor = sparkColors[Math.floor(Math.random() * sparkColors.length)];
                     spark.style.background = chosenColor;
                     spark.style.boxShadow = `0 0 12px ${chosenColor}, 0 0 20px ${chosenColor}`;
-                    
-                    // Scaling adjustments
+                   
                     const radiusSize = Math.random() * 8 + 4;
                     spark.style.width = `${radiusSize}px`;
                     spark.style.height = `${radiusSize}px`;
-                    
-                    // Trajectory vectors
+                   
                     const physicsX = (Math.random() - 0.5) * 60;
                     const physicsY = (Math.random() - 0.6) * 90;
                     spark.style.setProperty('--pX', `${physicsX}px`);
                     spark.style.setProperty('--pY', `${physicsY}px`);
-                    
+                   
                     container.appendChild(spark);
-                    
-                    // Clean up nodes after lifetime loops close out
                     setTimeout(() => spark.remove(), 1200);
                 }
             }, tickRate);
-        }, 3800); // Trigger timeline starts exactly when text begins wiping (3.8s)
+        }, 3800);
     </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 body {
     background: #0a0a14;
     color: #fff;
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
     height: 100vh;
     overflow: hidden;
     position: relative;
@@ -65,10 +65,12 @@ body {
 }
 .intro-text {
     margin-top: 25px;
-    font-size: 2.4rem;
-    font-weight: bold;
+    font-family: 'Chewy', cursive;
+    font-size: 2.8rem;
+    font-weight: normal;
     color: #00ffcc;
     text-shadow: 0 0 25px #00ffcc;
+    letter-spacing: 2px;
 }
 
 /* Rotating Aura */
@@ -111,11 +113,17 @@ body {
 }
 
 .pitch-paragraph {
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: 1.32rem;
-    line-height: 1.7;
+    line-height: 1.75;
     text-align: left;
+    font-weight: 400;
     opacity: 0;
     animation: textWipe 4s cubic-bezier(0.23, 1, 0.32, 1) forwards 4s;
+}
+
+.pitch-paragraph strong {
+    font-weight: 700;
 }
 
 @keyframes textWipe {
@@ -141,6 +149,7 @@ body {
     margin-top: 50px;
     opacity: 0.6;
     font-size: 1rem;
+    font-family: 'Inter', sans-serif;
     animation: pulse 2s infinite;
 }
 

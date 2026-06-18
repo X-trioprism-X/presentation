@@ -21,8 +21,8 @@
             <div class="intro-text">Hello Sharks</div>
         </div>
        
-        <!-- Main content with aura -->
-        <div class="aura-wrapper" id="auraWrapper">
+        <!-- Aura + Text -->
+        <div class="aura-wrapper">
             <div class="wipe-container" id="wipeContainer">
                 <p class="pitch-paragraph">
                     Within this pitch I, the representative of <strong>Epsilon initiative</strong>,
@@ -35,52 +35,48 @@
                 </p>
             </div>
         </div>
+
         <div class="click-hint">Click anywhere to go fullscreen</div>
     </div>
 
     <script>
-        // Fullscreen toggle
+        // Fullscreen
         document.body.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Fullscreen error: ${err.message}`);
-                });
+                document.documentElement.requestFullscreen().catch(() => {});
             } else {
                 document.exitFullscreen();
             }
         });
 
-        // ====================== NEON PARTICLE BACKGROUND ======================
+        // ==================== PARTICLE BACKGROUND ====================
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        let particlesEnabled = true;
 
         class Particle {
-            constructor() {
-                this.reset();
-            }
+            constructor() { this.reset(); }
             reset() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 this.size = Math.random() * 3 + 1;
-                this.speedY = Math.random() * 1.2 + 0.6;
+                this.speedY = Math.random() * 1.4 + 0.6;
                 this.speedX = Math.random() * 0.8 - 0.4;
-                this.hue = Math.random() * 60 + 280; // Cyan → Purple → Pink range
-                this.opacity = Math.random() * 0.7 + 0.4;
+                this.hue = Math.random() * 70 + 270; // Purple → Cyan
+                this.opacity = Math.random() * 0.75 + 0.35;
                 this.life = 1;
             }
             update() {
                 this.y -= this.speedY;
                 this.x += this.speedX;
-                this.life -= 0.003;
+                this.life -= 0.0032;
                 if (this.y < 0 || this.life <= 0) this.reset();
             }
             draw() {
                 ctx.save();
                 ctx.globalAlpha = this.opacity * this.life;
-                ctx.fillStyle = `hsl(${this.hue}, 100%, 75%)`;
-                ctx.shadowBlur = 18;
+                ctx.fillStyle = `hsl(${this.hue}, 100%, 78%)`;
+                ctx.shadowBlur = 20;
                 ctx.shadowColor = `hsl(${this.hue}, 100%, 65%)`;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -89,23 +85,21 @@
             }
         }
 
-        function initParticles(count = 140) {
+        function initParticles(count = 130) {
             particles = [];
-            for (let i = 0; i < count; i++) {
-                particles.push(new Particle());
-            }
+            for (let i = 0; i < count; i++) particles.push(new Particle());
         }
 
         function drawConnections() {
-            ctx.strokeStyle = 'rgba(0, 255, 220, 0.12)';
-            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(120, 80, 255, 0.18)';
+            ctx.lineWidth = 1.1;
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
-                    const distance = Math.hypot(dx, dy);
-                    if (distance < 160) {
-                        ctx.globalAlpha = (1 - distance / 160) * 0.25;
+                    const dist = Math.hypot(dx, dy);
+                    if (dist < 155) {
+                        ctx.globalAlpha = (1 - dist / 155) * 0.28;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
@@ -116,82 +110,62 @@
             ctx.globalAlpha = 1;
         }
 
-        function animateParticles() {
-            if (!particlesEnabled) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                requestAnimationFrame(animateParticles);
-                return;
-            }
-
-            ctx.fillStyle = 'rgba(10, 10, 20, 0.15)'; // Soft trail
+        function animate() {
+            ctx.fillStyle = 'rgba(8, 8, 18, 0.14)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
+            particles.forEach(p => { p.update(); p.draw(); });
             drawConnections();
-            requestAnimationFrame(animateParticles);
+            requestAnimationFrame(animate);
         }
 
-        function resizeCanvas() {
+        function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            initParticles(140);
+            initParticles(130);
         }
 
-        // ====================== TEXT WIPE + PARTICLES ======================
+        // Text wipe particles
         setTimeout(() => {
             const container = document.getElementById('wipeContainer');
             const totalDuration = 4000;
-            const tickRate = 35;
             const startTime = Date.now();
-           
+
             const emitter = setInterval(() => {
                 const elapsed = Date.now() - startTime;
-                if (elapsed >= totalDuration) {
-                    clearInterval(emitter);
-                    return;
-                }
-               
-                const linearProgress = elapsed / totalDuration;
-                const easeProgress = 1 - Math.pow(1 - linearProgress, 3);
-                const completeX = easeProgress * 100;
-               
+                if (elapsed >= totalDuration) return clearInterval(emitter);
+
+                const progress = 1 - Math.pow(1 - (elapsed / totalDuration), 3);
+                const x = progress * 100;
+
                 for (let i = 0; i < 4; i++) {
                     const spark = document.createElement('div');
                     spark.className = 'roblox-particle';
-                   
-                    const randomY = Math.random() * 100;
-                    spark.style.left = `${completeX}%`;
-                    spark.style.top = `${randomY}%`;
-                   
-                    const sparkColors = ['#ff0055', '#00ffcc', '#9900ff', '#ff9900', '#ffff00', '#ff00ff'];
-                    const chosenColor = sparkColors[Math.floor(Math.random() * sparkColors.length)];
-                    spark.style.background = chosenColor;
-                    spark.style.boxShadow = `0 0 12px ${chosenColor}, 0 0 20px ${chosenColor}`;
-                   
-                    const radiusSize = Math.random() * 8 + 4;
-                    spark.style.width = `${radiusSize}px`;
-                    spark.style.height = `${radiusSize}px`;
-                   
-                    const physicsX = (Math.random() - 0.5) * 60;
-                    const physicsY = (Math.random() - 0.6) * 90;
-                    spark.style.setProperty('--pX', `${physicsX}px`);
-                    spark.style.setProperty('--pY', `${physicsY}px`);
-                   
+                    spark.style.left = `${x}%`;
+                    spark.style.top = `${Math.random() * 100}%`;
+
+                    const colors = ['#ff0055', '#00ffcc', '#9900ff', '#ff00ff'];
+                    const col = colors[Math.floor(Math.random() * colors.length)];
+                    spark.style.background = col;
+                    spark.style.boxShadow = `0 0 15px ${col}`;
+
+                    spark.style.width = `${Math.random()*7 + 4}px`;
+                    spark.style.height = spark.style.width;
+
+                    spark.style.setProperty('--pX', `${(Math.random()-0.5)*70}px`);
+                    spark.style.setProperty('--pY', `${(Math.random()-0.6)*100}px`);
+
                     container.appendChild(spark);
-                    setTimeout(() => spark.remove(), 1200);
+                    setTimeout(() => spark.remove(), 1100);
                 }
-            }, tickRate);
+            }, 35);
         }, 3800);
 
-        // Init everything
+        // Init
         window.onload = () => {
-            resizeCanvas();
-            animateParticles();
-            window.addEventListener('resize', resizeCanvas);
+            resize();
+            animate();
+            window.addEventListener('resize', resize);
         };
     </script>
 </body>

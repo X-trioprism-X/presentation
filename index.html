@@ -4,169 +4,420 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Epsilon Initiative Pitch</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #030308;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Moving diagonal grid background */
+        .bg-grid {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image:
+                linear-gradient(rgba(0, 210, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 210, 255, 0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            transform: rotate(-15deg);
+            animation: diagonalMove 25s linear infinite;
+            z-index: 1;
+        }
+        /* Ambient glow in the center */
+        .bg-glow {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 82, 212, 0.12) 0%, rgba(0,0,0,0) 70%);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .presentation-container {
+            position: relative;
+            z-index: 3;
+            width: 90%;
+            max-width: 1100px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Intro Stage: Logo styling and positioning */
+        .logo-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 180px;
+            margin-bottom: 2.5rem;
+        }
+        .logo-image {
+            height: 120px;
+            width: auto;
+            opacity: 0;
+            transform: scale(0.85);
+            animation: logoFadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.2s;
+        }
+        /* Shiny overlay animation box over the logo */
+        .logo-shine-box {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0;
+            animation: logoFadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.2s;
+        }
+        .logo-shine-box::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -150%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 30%,
+                rgba(0, 210, 255, 0.3) 45%,
+                rgba(255, 255, 255, 0.6) 50%,
+                rgba(0, 210, 255, 0.3) 55%,
+                rgba(255, 255, 255, 0) 70%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: shineSweep 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation-delay: 1s;
+        }
+        /* Subtitle text triggered after the shine sweeps */
+        .intro-text {
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.6rem;
+            color: #00d2ff;
+            position: absolute;
+            bottom: 0;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 2.2s;
+        }
+        /* Container with Timed Roblox-style Neon Rainbow Aura Border */
+        .wipe-container {
+            position: relative;
+            display: block;
+            width: 100%;
+            padding: 2.5rem;
+            background: rgba(5, 5, 15, 0.85);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            border: 3px solid transparent;
+            background-image: linear-gradient(rgba(5, 5, 15, 0.95), rgba(5, 5, 15, 0.95)),
+                              linear-gradient(var(--rainbow-angle), #ff0055, #00ffcc, #9900ff, #ff9900, #ff0055);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            animation:
+                revealContainer 0.1s linear forwards,
+                rotateRainbowAngle 4s linear infinite,
+                auraGlowPop 1s ease-out forwards;
+            animation-delay: 3.5s, 0s, 7.8s;
+        }
+        /* Speed up rainbow aura loop cycle when browser triggers Fullscreen mode */
+        body:fullscreen .wipe-container {
+            animation-duration: 0.1s, 1.3s, 1s;
+        }
+        /* Circular Wheel Loading Border Overlay Effect */
+        .wipe-container::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border-radius: 16px;
+            background: #030308;
+            z-index: 1;
+            pointer-events: none;
+            clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 50% 0%);
+            animation: borderWheelReveal 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation-delay: 7.8s;
+        }
+        /* Ensures content stays above background masks */
+        .pitch-paragraph {
+            position: relative;
+            z-index: 2;
+            font-size: 1.8rem;
+            line-height: 1.6;
+            font-weight: 300;
+            color: #e2e8f0;
+            text-align: center;
+            display: block;
+            clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+            animation: textWipe 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation-delay: 3.8s;
+        }
+        /* Key emphasis phrases sync colors directly with the changing rainbow aura */
+        .wipe-container strong {
+            display: inline-block;
+            font-weight: 700;
+            background: linear-gradient(var(--rainbow-angle), #ff0055, #00ffcc, #9900ff, #ff9900, #ff0055);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rotateRainbowAngle 4s linear infinite;
+            filter: drop-shadow(0 0 12px rgba(0, 255, 204, 0.5));
+        }
+        body:fullscreen .wipe-container strong {
+            animation-duration: 1.3s;
+        }
+        /* Highlighted placeholder styling with glowing aura colors */
+        .placeholder-highlight {
+            display: inline-block;
+            font-weight: 800;
+            background: linear-gradient(var(--rainbow-angle), #ff0055, #00ffcc, #9900ff, #ff9900, #ff0055);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rotateRainbowAngle 4s linear infinite;
+            padding: 0 4px;
+            filter: drop-shadow(0 0 15px rgba(255, 0, 85, 0.6));
+        }
+        body:fullscreen .placeholder-highlight {
+            animation-duration: 1.3s;
+        }
+        /* Realistic Roblox Particle Trail Engine properties */
+        .roblox-particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10;
+            mix-blend-mode: screen;
+            animation: particleBehavior 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        /* Interactive trigger hint */
+        .click-hint {
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            letter-spacing: 0.2rem;
+            color: #334155;
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
+        }
+        /* Custom Property Setup for the Rainbow Rotation Engine */
+        @property --rainbow-angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+        /* Background Movement Animation */
+        @keyframes diagonalMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 1200px 600px; }
+        }
+        /* Logo Fade-in Scaling Engine */
+        @keyframes logoFadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.85);
+                filter: blur(8px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                filter: blur(0);
+            }
+        }
+        /* Diagonal flare sweep timeline */
+        @keyframes shineSweep {
+            0% { left: -150%; }
+            100% { left: 150%; }
+        }
+        /* Text Box Reveal helper */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(15px);
+                filter: blur(4px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+        /* Window handling visibility flashes */
+        @keyframes revealContainer {
+            to { opacity: 1; }
+        }
+        /* Dynamic Border Gradient Shift Loop */
+        @keyframes rotateRainbowAngle {
+            0% { --rainbow-angle: 0deg; }
+            100% { --rainbow-angle: 360deg; }
+        }
+        /* Smooth Block Wipe Layout Fix */
+        @keyframes textWipe {
+            0% { clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%); }
+            100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
+        }
+        /* Clockwise angular wheel swipe to unmask the rainbow border */
+        @keyframes borderWheelReveal {
+            0% {
+                clip-path: polygon(50% 50%, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+            }
+            25% {
+                clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%);
+            }
+            50% {
+                clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 100% 100%, 100% 100%, 100% 100%);
+            }
+            75% {
+                clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 100%, 0% 100%);
+            }
+            100% {
+                clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 50% 0%);
+            }
+        }
+        /* Heavy Roblox-style aura bloom popping outward when the wheel loading completes */
+        @keyframes auraGlowPop {
+            0% {
+                box-shadow: 0 0 0px rgba(0, 0, 0, 0);
+            }
+            100% {
+                box-shadow:
+                    0 0 40px rgba(255, 0, 85, 0.5),
+                    0 0 80px rgba(0, 255, 204, 0.4),
+                    0 0 120px rgba(153, 0, 255, 0.3),
+                    inset 0 0 20px rgba(255, 255, 255, 0.05);
+            }
+        }
+        /* Particle motion paths simulation */
+        @keyframes particleBehavior {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--pX), var(--pY)) scale(0.2);
+            }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Particle Canvas Background -->
-    <canvas id="particle-canvas"></canvas>
-
     <div class="bg-grid"></div>
     <div class="bg-glow"></div>
-    
     <div class="presentation-container">
-        <!-- Logo Section -->
+        <!-- Logo Section with custom timed shine overlay effects -->
         <div class="logo-wrapper">
             <img src="logo.webp" alt="Epsilon Logo" class="logo-image">
             <div class="logo-shine-box"></div>
             <div class="intro-text">Hello Sharks</div>
         </div>
        
-        <!-- Aura + Text -->
-        <div class="aura-wrapper">
-            <div class="wipe-container" id="wipeContainer">
-                <p class="pitch-paragraph">
-                    Within this pitch I, the representative of <strong>Epsilon initiative</strong>,
-                    shall present our revolutionary service…
-                    <span class="placeholder-highlight">“[Placeholder]”</span>.
-                    Upon the initiation of publicly announcing the release of this extraordinary service.
-                    Epsilon industries expects a voluminous fluctuation within service purchasing rates.
-                    As evident within simulation scenarios, control groups presented enthusiastic eagerness
-                    to purchase the service, whereas contrary to other similar services.
-                </p>
-            </div>
+        <!-- Main body paragraph wrapper with dynamic Roblox Rainbow Aura Border -->
+        <div class="wipe-container" id="wipeContainer">
+            <p class="pitch-paragraph">
+                Within this pitch I, the representative of <strong>Epsilon initiative</strong>,
+                shall present our revolutionary service…
+                <span class="placeholder-highlight">“[Placeholder]”</span>.
+                Upon the initiation of publicly announcing the release of this extraordinary service.
+                Epsilon industries expects a voluminous fluctuation within service purchasing rates.
+                As evident within simulation scenarios, control groups presented enthusiastic eagerness
+                to purchase the service, whereas contrary to other similar services.
+            </p>
         </div>
-
         <div class="click-hint">Click anywhere to go fullscreen</div>
     </div>
 
     <script>
-        // Fullscreen
+        // Fullscreen toggle logic on tap/click
         document.body.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => {});
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Fullscreen error: ${err.message}`);
+                });
             } else {
                 document.exitFullscreen();
             }
         });
 
-        // ==================== PARTICLE BACKGROUND ====================
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        class Particle {
-            constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1;
-                this.speedY = Math.random() * 1.4 + 0.6;
-                this.speedX = Math.random() * 0.8 - 0.4;
-                this.hue = Math.random() * 70 + 270; // Purple → Cyan
-                this.opacity = Math.random() * 0.75 + 0.35;
-                this.life = 1;
-            }
-            update() {
-                this.y -= this.speedY;
-                this.x += this.speedX;
-                this.life -= 0.0032;
-                if (this.y < 0 || this.life <= 0) this.reset();
-            }
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.opacity * this.life;
-                ctx.fillStyle = `hsl(${this.hue}, 100%, 78%)`;
-                ctx.shadowBlur = 20;
-                ctx.shadowColor = `hsl(${this.hue}, 100%, 65%)`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-            }
-        }
-
-        function initParticles(count = 130) {
-            particles = [];
-            for (let i = 0; i < count; i++) particles.push(new Particle());
-        }
-
-        function drawConnections() {
-            ctx.strokeStyle = 'rgba(120, 80, 255, 0.18)';
-            ctx.lineWidth = 1.1;
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.hypot(dx, dy);
-                    if (dist < 155) {
-                        ctx.globalAlpha = (1 - dist / 155) * 0.28;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-            ctx.globalAlpha = 1;
-        }
-
-        function animate() {
-            ctx.fillStyle = 'rgba(8, 8, 18, 0.14)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            particles.forEach(p => { p.update(); p.draw(); });
-            drawConnections();
-            requestAnimationFrame(animate);
-        }
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initParticles(130);
-        }
-
-        // Text wipe particles
+        // Real-time particle emitter tracking along the text wipe line
         setTimeout(() => {
             const container = document.getElementById('wipeContainer');
-            const totalDuration = 4000;
+            const totalDuration = 4000; // Matches CSS .pitch-paragraph wipe animation time (4s)
+            const tickRate = 35; // Spawn frequency in ms
             const startTime = Date.now();
-
+           
             const emitter = setInterval(() => {
                 const elapsed = Date.now() - startTime;
-                if (elapsed >= totalDuration) return clearInterval(emitter);
-
-                const progress = 1 - Math.pow(1 - (elapsed / totalDuration), 3);
-                const x = progress * 100;
-
+                if (elapsed >= totalDuration) {
+                    clearInterval(emitter);
+                    return;
+                }
+               
+                // Track percentage completion
+                const linearProgress = elapsed / totalDuration;
+               
+                // Approximate the cubic-bezier curve shape mathematically to align particles directly on the leading wipe edge
+                const easeProgress = 1 - Math.pow(1 - linearProgress, 3);
+                const completeX = easeProgress * 100;
+               
+                // Spawn small grouping clusters per interval frame
                 for (let i = 0; i < 4; i++) {
                     const spark = document.createElement('div');
                     spark.className = 'roblox-particle';
-                    spark.style.left = `${x}%`;
-                    spark.style.top = `${Math.random() * 100}%`;
-
-                    const colors = ['#ff0055', '#00ffcc', '#9900ff', '#ff00ff'];
-                    const col = colors[Math.floor(Math.random() * colors.length)];
-                    spark.style.background = col;
-                    spark.style.boxShadow = `0 0 15px ${col}`;
-
-                    spark.style.width = `${Math.random()*7 + 4}px`;
-                    spark.style.height = spark.style.width;
-
-                    spark.style.setProperty('--pX', `${(Math.random()-0.5)*70}px`);
-                    spark.style.setProperty('--pY', `${(Math.random()-0.6)*100}px`);
-
+                   
+                    // Assign positions across the height boundaries randomly
+                    const randomY = Math.random() * 100;
+                    spark.style.left = `${completeX}%`;
+                    spark.style.top = `${randomY}%`;
+                   
+                    // Color selections matching standard hyper-vibrant Roblox tiers
+                    const sparkColors = ['#ff0055', '#00ffcc', '#9900ff', '#ff9900', '#ffff00', '#ff00ff'];
+                    const chosenColor = sparkColors[Math.floor(Math.random() * sparkColors.length)];
+                    spark.style.background = chosenColor;
+                    spark.style.boxShadow = `0 0 12px ${chosenColor}, 0 0 20px ${chosenColor}`;
+                   
+                    // Scaling adjustments
+                    const radiusSize = Math.random() * 8 + 4;
+                    spark.style.width = `${radiusSize}px`;
+                    spark.style.height = `${radiusSize}px`;
+                   
+                    // Trajectory vectors
+                    const physicsX = (Math.random() - 0.5) * 60;
+                    const physicsY = (Math.random() - 0.6) * 90;
+                    spark.style.setProperty('--pX', `${physicsX}px`);
+                    spark.style.setProperty('--pY', `${physicsY}px`);
+                   
                     container.appendChild(spark);
-                    setTimeout(() => spark.remove(), 1100);
                 }
-            }, 35);
-        }, 3800);
-
-        // Init
-        window.onload = () => {
-            resize();
-            animate();
-            window.addEventListener('resize', resize);
-        };
+            }, tickRate);
+        }, 3800); // Start particles roughly when text wipe begins
     </script>
 </body>
 </html>

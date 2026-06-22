@@ -65,22 +65,27 @@
             justify-content: center;
             height: 180px;
             margin-bottom: 2.5rem;
+            width: 100%;
         }
         .logo-image {
             height: 120px;
             width: auto;
+            max-width: 100%;
             opacity: 0;
             transform: scale(0.85);
             animation: logoFadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             animation-delay: 0.2s;
+            position: relative;
+            z-index: 2;
         }
         /* Shiny overlay animation box over the logo */
         .logo-shine-box {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 120px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px; /* Slightly larger than logo to cover shine */
+            height: 140px;
             overflow: hidden;
             pointer-events: none;
             opacity: 0;
@@ -98,9 +103,9 @@
                 to right,
                 rgba(255, 255, 255, 0) 0%,
                 rgba(255, 255, 255, 0) 30%,
-                rgba(0, 210, 255, 0.3) 45%,
-                rgba(255, 255, 255, 0.6) 50%,
-                rgba(0, 210, 255, 0.3) 55%,
+                rgba(168, 85, 247, 0.4) 45%,
+                rgba(255, 255, 255, 0.7) 50%,
+                rgba(168, 85, 247, 0.4) 55%,
                 rgba(255, 255, 255, 0) 70%,
                 rgba(255, 255, 255, 0) 100%
             );
@@ -329,6 +334,7 @@
     </style>
 </head>
 <body>
+    <canvas id="particle-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.85;"></canvas>
     <div class="bg-grid"></div>
     <div class="bg-glow"></div>
     <div class="presentation-container">
@@ -355,6 +361,96 @@
     </div>
 
     <script>
+        // ==================== PURPLE NEON PARTICLE BACKGROUND ====================
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let particlesEnabled = true;
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3.5 + 1.2;
+                this.speedY = Math.random() * 1.3 + 0.7;
+                this.speedX = Math.random() * 0.8 - 0.4;
+                this.hue = 265 + Math.random() * 45; // Rich purple range
+                this.opacity = Math.random() * 0.75 + 0.45;
+                this.life = 1;
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                this.life -= 0.0035;
+                if (this.y < 0 || this.life <= 0) this.reset();
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity * this.life;
+                ctx.fillStyle = `hsl(${this.hue}, 95%, 78%)`;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = `hsl(${this.hue}, 100%, 65%)`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 28;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function initParticles(count = 130) {
+            particles = [];
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function drawConnections() {
+            ctx.strokeStyle = 'rgba(168, 85, 247, 0.15)';
+            ctx.lineWidth = 1.1;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.hypot(dx, dy);
+                    if (distance < 145) {
+                        ctx.globalAlpha = (1 - distance / 145) * 0.28;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            ctx.globalAlpha = 1;
+        }
+
+        function animateParticles() {
+            if (!particlesEnabled) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                requestAnimationFrame(animateParticles);
+                return;
+            }
+            ctx.fillStyle = 'rgba(2, 6, 23, 0.13)'; // Soft trail
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+        }
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles(130);
+        }
+
         // Fullscreen toggle logic on tap/click
         document.body.addEventListener('click', () => {
             if (!document.fullscreenElement) {
@@ -365,6 +461,14 @@
                 document.exitFullscreen();
             }
         });
+
+        // Initialize purple particles
+        window.addEventListener('load', () => {
+            resizeCanvas();
+            animateParticles();
+        });
+
+        window.addEventListener('resize', resizeCanvas);
 
         // Real-time particle emitter tracking along the text wipe line
         setTimeout(() => {

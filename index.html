@@ -5,525 +5,433 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Epsilon Initiative Pitch</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html {
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #030308;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #030308;
+            font-family: 'Inter', system-ui, sans-serif;
             color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        /* Moving diagonal grid background */
         .bg-grid {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
+            inset: 0;
             background-image:
-                linear-gradient(rgba(0, 210, 255, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 210, 255, 0.04) 1px, transparent 1px);
-            background-size: 60px 60px;
-            transform: rotate(-15deg);
-            animation: diagonalMove 25s linear infinite;
+                linear-gradient(rgba(168, 85, 247, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(168, 85, 247, 0.07) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: rotate(-12deg);
+            animation: diagonalMove 28s linear infinite;
             z-index: 1;
         }
-        /* Ambient glow in the center */
         .bg-glow {
             position: absolute;
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, rgba(0, 82, 212, 0.12) 0%, rgba(0,0,0,0) 70%);
+            width: 1000px;
+            height: 1000px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.22) 0%, transparent 65%);
             z-index: 2;
             pointer-events: none;
         }
         .presentation-container {
             position: relative;
             z-index: 3;
-            width: 90%;
-            max-width: 1100px;
+            width: 92%;
+            max-width: 1080px;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
-        /* Intro Stage: Logo styling and positioning */
         .logo-wrapper {
+            height: 160px;
+            margin-bottom: 2rem;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 180px;
-            margin-bottom: 2.5rem;
-            width: 100%;
         }
         .logo-image {
-            height: 120px;
-            width: auto;
-            max-width: 100%;
-            opacity: 0;
-            transform: scale(0.85);
-            animation: logoFadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation-delay: 0.2s;
-            position: relative;
-            z-index: 2;
+            height: 110px;
+            animation: logoFadeIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        /* Shiny overlay animation box over the logo */
-        .logo-shine-box {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none;
-            opacity: 0;
-            animation: logoFadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation-delay: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .logo-shine-box::after {
-            content: '';
-            position: absolute;
-            top: -40%;
-            left: -150%;
-            width: 280%;
-            height: 180%;
-            background: linear-gradient(
-                to right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0) 30%,
-                rgba(168, 85, 247, 0.45) 45%,
-                rgba(255, 255, 255, 0.75) 50%,
-                rgba(168, 85, 247, 0.45) 55%,
-                rgba(255, 255, 255, 0) 70%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(25deg);
-            animation: shineSweep 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            animation-delay: 1s;
-        }
-        /* Subtitle text triggered after the shine sweeps */
         .intro-text {
-            font-size: 1.4rem;
-            text-transform: uppercase;
-            letter-spacing: 0.6rem;
-            color: #00d2ff;
-            position: absolute;
-            bottom: 0;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.3rem;
+            letter-spacing: 8px;
+            color: #67e8f9;
+            text-shadow: 0 0 40px #67e8f9;
+            margin-top: 1rem;
             opacity: 0;
-            transform: translateY(15px);
-            animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            animation-delay: 2.2s;
+            animation: fadeInUp 1.4s forwards 2s;
         }
-        /* Container with Timed Roblox-style Neon Rainbow Aura Border */
+        /* === EXTENDING RAINBOW AURA === */
         .wipe-container {
             position: relative;
-            display: block;
-            width: 100%;
-            padding: 2.5rem;
-            background: rgba(5, 5, 15, 0.85);
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
-            opacity: 0;
-            border: 3px solid transparent;
-            background-image: linear-gradient(rgba(5, 5, 15, 0.95), rgba(5, 5, 15, 0.95)),
-                              linear-gradient(var(--rainbow-angle), #ff0055, #00ffcc, #9900ff, #ff9900, #ff0055);
+            padding: 3rem 3.5rem;
+            background: rgba(8, 6, 28, 0.94);
+            border-radius: 22px;
+            backdrop-filter: blur(20px);
+            border: 5px solid transparent;
+            background-image:
+                linear-gradient(rgba(8, 6, 28, 0.96), rgba(8, 6, 28, 0.96)),
+                conic-gradient(from 0deg,
+                    #ff0080, #ff00cc, #ff8000, #ffff00,
+                    #00ff80, #00ccff, #0080ff, #8000ff, #ff0080);
             background-origin: border-box;
             background-clip: padding-box, border-box;
             animation:
-                revealContainer 0.1s linear forwards,
-                rotateRainbowAngle 4s linear infinite,
-                auraGlowPop 1s ease-out forwards;
-            animation-delay: 3.5s, 0s, 7.8s;
+                revealContainer 0.5s forwards,
+                rainbowSpin 2.8s linear infinite,
+                auraExtend 7s ease-in-out infinite;
+            box-shadow:
+                0 0 70px rgba(255, 0, 128, 0.7),
+                0 0 140px rgba(0, 255, 200, 0.5),
+                0 0 220px rgba(128, 0, 255, 0.4);
         }
-        /* Speed up rainbow aura loop cycle when browser triggers Fullscreen mode */
-        body:fullscreen .wipe-container {
-            animation-duration: 0.1s, 1.3s, 1s;
-        }
-        /* Circular Wheel Loading Border Overlay Effect */
+        /* Extra outer extending glow layers */
         .wipe-container::before {
             content: '';
             position: absolute;
-            top: -3px;
-            left: -3px;
-            right: -3px;
-            bottom: -3px;
-            border-radius: 16px;
-            background: #030308;
-            z-index: 1;
-            pointer-events: none;
-            clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 50% 0%);
-            animation: borderWheelReveal 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            animation-delay: 7.8s;
+            inset: -25px;
+            border-radius: 38px;
+            background: conic-gradient(from 0deg,
+                #ff0080, #ff00cc, #ff8000, #ffff00,
+                #00ff80, #00ccff, #0080ff, #8000ff, #ff0080);
+            background-size: 400% 400%;
+            filter: blur(35px);
+            opacity: 0.75;
+            z-index: -1;
+            animation: rainbowSpin 3.6s linear infinite reverse, auraExtendOuter 8s ease-in-out infinite;
         }
-        /* Ensures content stays above background masks */
+        .wipe-container::after {
+            content: '';
+            position: absolute;
+            inset: -45px;
+            border-radius: 50px;
+            background: conic-gradient(from 90deg,
+                #ff0080, #ff00cc, #ff8000, #ffff00,
+                #00ff80, #00ccff, #0080ff, #8000ff, #ff0080);
+            filter: blur(55px);
+            opacity: 0.45;
+            z-index: -2;
+            animation: rainbowSpin 4.8s linear infinite;
+        }
+        @keyframes rainbowSpin {
+            from { background-position: 0% 50%; }
+            to { background-position: 400% 50%; }
+        }
+        @keyframes auraExtend {
+            0%, 100% {
+                box-shadow:
+                    0 0 70px rgba(255, 0, 128, 0.7),
+                    0 0 140px rgba(0, 255, 200, 0.5),
+                    0 0 220px rgba(128, 0, 255, 0.4);
+            }
+            50% {
+                box-shadow:
+                    0 0 110px rgba(255, 0, 128, 0.9),
+                    0 0 200px rgba(0, 255, 200, 0.75),
+                    0 0 320px rgba(128, 0, 255, 0.6);
+            }
+        }
+        @keyframes auraExtendOuter {
+            0%, 100% { opacity: 0.65; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(1.08); }
+        }
         .pitch-paragraph {
             position: relative;
             z-index: 2;
-            font-size: 1.8rem;
-            line-height: 1.6;
+            font-size: 1.85rem;
+            line-height: 1.68;
             font-weight: 300;
-            color: #e2e8f0;
+            color: #e0e7ff;
             text-align: center;
-            display: block;
             clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
-            animation: textWipe 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            animation-delay: 3.8s;
+            animation: textWipe 4.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation-delay: 3.6s;
         }
-        /* Key emphasis phrases sync colors directly with the changing rainbow aura */
-        .wipe-container strong {
-            display: inline-block;
+        .placeholder-highlight,
+        strong {
+            background: linear-gradient(90deg, #ff0080, #00ffcc, #9900ff, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbowSpin 2.6s linear infinite;
             font-weight: 700;
-            background: linear-gradient(var(--rainbow-angle), #ff0055, #00ffcc, #9900ff, #ff9900, #ff0055);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: rotateRainbowAngle 4s linear infinite;
-            filter: drop-shadow(0 0 12px rgba(0, 255, 204, 0.5));
         }
-        body:fullscreen .wipe-container strong {
-            animation-duration: 1.3s;
+        body:fullscreen .wipe-container {
+            animation-duration: 1.8s, 2.4s, 5s;
         }
-        /* Highlighted placeholder styling with glowing aura colors */
-        .placeholder-highlight {
-            display: inline-block;
-            font-weight: 800;
-            background: linear-gradient(var(--rainbow-angle), #ff0055, #00ffcc, #9900ff, #ff9900, #ff0055);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: rotateRainbowAngle 4s linear infinite;
-            padding: 0 4px;
-            filter: drop-shadow(0 0 15px rgba(255, 0, 85, 0.6));
-        }
-        body:fullscreen .placeholder-highlight {
-            animation-duration: 1.3s;
-        }
-        /* Realistic Roblox Particle Trail Engine properties */
-        .roblox-particle {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 10;
-            mix-blend-mode: screen;
-            animation: particleBehavior 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        /* Interactive trigger hint */
-        .click-hint {
-            position: absolute;
-            bottom: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.9rem;
-            letter-spacing: 0.2rem;
-            color: #334155;
-            text-transform: uppercase;
-            animation: pulse 2s infinite;
-        }
-        /* Custom Property Setup for the Rainbow Rotation Engine */
-        @property --rainbow-angle {
-            syntax: '<angle>';
-            initial-value: 0deg;
-            inherits: false;
-        }
-        /* Background Movement Animation */
+        /* Other animations */
         @keyframes diagonalMove {
             0% { background-position: 0 0; }
-            100% { background-position: 1200px 600px; }
+            100% { background-position: 800px 800px; }
         }
-        /* Logo Fade-in Scaling Engine */
         @keyframes logoFadeIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.85);
-                filter: blur(8px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-                filter: blur(0);
-            }
+            from { opacity: 0; transform: scale(0.8); filter: blur(10px); }
+            to { opacity: 1; transform: scale(1); filter: blur(0); }
         }
-        /* Diagonal flare sweep timeline */
-        @keyframes shineSweep {
-            0% { left: -150%; }
-            100% { left: 150%; }
-        }
-        /* Text Box Reveal helper */
         @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(15px);
-                filter: blur(4px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-                filter: blur(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        /* Window handling visibility flashes */
-        @keyframes revealContainer {
-            to { opacity: 1; }
-        }
-        /* Dynamic Border Gradient Shift Loop */
-        @keyframes rotateRainbowAngle {
-            0% { --rainbow-angle: 0deg; }
-            100% { --rainbow-angle: 360deg; }
-        }
-        /* Smooth Block Wipe Layout Fix */
+        @keyframes revealContainer { to { opacity: 1; } }
         @keyframes textWipe {
             0% { clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%); }
             100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
         }
-        /* Clockwise angular wheel swipe to unmask the rainbow border */
-        @keyframes borderWheelReveal {
-            0% {
-                clip-path: polygon(50% 50%, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
-            }
-            25% {
-                clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%);
-            }
-            50% {
-                clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 100% 100%, 100% 100%, 100% 100%);
-            }
-            75% {
-                clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 100%, 0% 100%);
-            }
-            100% {
-                clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 50% 0%);
-            }
-        }
-        /* Heavy Roblox-style aura bloom popping outward when the wheel loading completes */
-        @keyframes auraGlowPop {
-            0% {
-                box-shadow: 0 0 0px rgba(0, 0, 0, 0);
-            }
-            100% {
-                box-shadow:
-                    0 0 40px rgba(255, 0, 85, 0.5),
-                    0 0 80px rgba(0, 255, 204, 0.4),
-                    0 0 120px rgba(153, 0, 255, 0.3),
-                    inset 0 0 20px rgba(255, 255, 255, 0.05);
-            }
-        }
-        /* Particle motion paths simulation */
-        @keyframes particleBehavior {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(var(--pX), var(--pY)) scale(0.2);
-            }
+        .click-hint {
+            margin-top: 2.8rem;
+            font-size: 0.95rem;
+            letter-spacing: 3px;
+            color: #64748b;
+            animation: pulse 2s infinite;
         }
         @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
+            0%, 100% { opacity: 0.45; }
+            50% { opacity: 0.9; }
+        }
+
+        /* Chicken 3D Overlay */
+        #three-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <canvas id="particle-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.85;"></canvas>
+    <canvas id="particle-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;"></canvas>
     <div class="bg-grid"></div>
     <div class="bg-glow"></div>
     <div class="presentation-container">
-        <!-- Logo Section with custom timed shine overlay effects -->
         <div class="logo-wrapper">
             <img src="logo.webp" alt="Epsilon Logo" class="logo-image">
-            <div class="logo-shine-box"></div>
-            <div class="intro-text">Hello Sharks</div>
+            <div class="intro-text">HELLO SHARKS</div>
         </div>
-       
-        <!-- Main body paragraph wrapper with dynamic Roblox Rainbow Aura Border -->
         <div class="wipe-container" id="wipeContainer">
             <p class="pitch-paragraph">
                 Within this pitch I, the representative of <strong>Epsilon initiative</strong>,
                 shall present our revolutionary service…
-                <span class="placeholder-highlight">“[Placeholder]”</span>.
+                <span class="placeholder-highlight">“[Placeholder]”</span>.<br><br>
                 Upon the initiation of publicly announcing the release of this extraordinary service.
                 Epsilon industries expects a voluminous fluctuation within service purchasing rates.
                 As evident within simulation scenarios, control groups presented enthusiastic eagerness
                 to purchase the service, whereas contrary to other similar services.
             </p>
         </div>
-        <div class="click-hint">Click anywhere to go fullscreen</div>
+        <div class="click-hint">CLICK ANYWHERE TO GO FULLSCREEN • PRESS "A" FOR CHICKEN</div>
     </div>
 
+    <!-- Three.js Chicken Container -->
+    <div id="three-container"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script>
-        // ==================== PURPLE NEON PARTICLE BACKGROUND ====================
+        // Original Particle System
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        let particlesEnabled = true;
-
         class Particle {
-            constructor() {
-                this.reset();
-            }
+            constructor() { this.reset(); }
             reset() {
                 this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3.5 + 1.2;
-                this.speedY = Math.random() * 1.3 + 0.7;
-                this.speedX = Math.random() * 0.8 - 0.4;
-                this.hue = 265 + Math.random() * 45; // Rich purple range
-                this.opacity = Math.random() * 0.75 + 0.45;
+                this.y = Math.random() * canvas.height * 0.7;
+                this.size = Math.random() * 3.8 + 1.4;
+                this.speedY = Math.random() * 1.4 + 0.8;
+                this.speedX = (Math.random() - 0.5) * 0.9;
+                this.hue = 265 + Math.random() * 50;
+                this.opacity = Math.random() * 0.8 + 0.4;
                 this.life = 1;
             }
             update() {
                 this.y -= this.speedY;
                 this.x += this.speedX;
-                this.life -= 0.0035;
+                this.life -= 0.004;
                 if (this.y < 0 || this.life <= 0) this.reset();
             }
             draw() {
                 ctx.save();
                 ctx.globalAlpha = this.opacity * this.life;
-                ctx.fillStyle = `hsl(${this.hue}, 95%, 78%)`;
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = `hsl(${this.hue}, 100%, 65%)`;
+                ctx.fillStyle = `hsl(${this.hue}, 100%, 78%)`;
+                ctx.shadowBlur = 18;
+                ctx.shadowColor = `hsl(${this.hue}, 100%, 70%)`;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.shadowBlur = 28;
                 ctx.fill();
                 ctx.restore();
             }
         }
-
-        function initParticles(count = 130) {
+        function initParticles(count = 140) {
             particles = [];
-            for (let i = 0; i < count; i++) {
-                particles.push(new Particle());
-            }
+            for (let i = 0; i < count; i++) particles.push(new Particle());
         }
-
-        function drawConnections() {
-            ctx.strokeStyle = 'rgba(168, 85, 247, 0.15)';
-            ctx.lineWidth = 1.1;
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.hypot(dx, dy);
-                    if (distance < 145) {
-                        ctx.globalAlpha = (1 - distance / 145) * 0.28;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-            ctx.globalAlpha = 1;
-        }
-
         function animateParticles() {
-            if (!particlesEnabled) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                requestAnimationFrame(animateParticles);
-                return;
-            }
-            ctx.fillStyle = 'rgba(2, 6, 23, 0.13)'; // Soft trail
+            ctx.fillStyle = 'rgba(3, 3, 8, 0.14)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            drawConnections();
+            particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animateParticles);
         }
-
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            initParticles(130);
+            initParticles(140);
         }
 
-        // Fullscreen toggle logic on tap/click
+        // Three.js Chicken Setup
+        let scene, camera, renderer, chickenCube, audio;
+        let activeChickens = [];
+
+        function initThree() {
+            const container = document.getElementById('three-container');
+            container.style.display = 'block';
+
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            // Ambient + directional light for cool look
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+            const dirLight = new THREE.DirectionalLight(0xff00cc, 1.2);
+            dirLight.position.set(5, 10, 7);
+            scene.add(dirLight);
+
+            // Preload audio
+            audio = new Audio('chicken-on-tree-screaming.mp3'); // ← Replace with your actual MP3 URL
+            audio.volume = 0.9;
+        }
+
+        function createRollingChicken() {
+            if (!scene) return;
+
+            // Create cube
+            const geometry = new THREE.BoxGeometry(2.2, 2.2, 2.2);
+            const textureLoader = new THREE.TextureLoader();
+            
+            // Use your GitHub image (replace with raw GitHub URL like https://raw.githubusercontent.com/...)
+            const texture = textureLoader.load('images (1).jpeg', () => {
+                // Texture loaded
+            });
+            texture.anisotropy = 16;
+
+            const material = new THREE.MeshPhongMaterial({
+                map: texture,
+                shininess: 30,
+                specular: 0xffffff
+            });
+
+            const cube = new THREE.Mesh(geometry, material);
+            cube.position.set(
+                (Math.random() - 0.5) * 8,
+                6 + Math.random() * 4,
+                -2
+            );
+            cube.rotation.set(
+                Math.random() * Math.PI * 2,
+                Math.random() * Math.PI * 2,
+                Math.random() * Math.PI * 2
+            );
+
+            scene.add(cube);
+            activeChickens.push(cube);
+
+            // Play scream
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
+            }
+
+            // Animate this specific chicken
+            let velocityY = -0.18 - Math.random() * 0.08;
+            let rotSpeedX = 0.12 + Math.random() * 0.15;
+            let rotSpeedY = 0.08 + Math.random() * 0.12;
+            let rotSpeedZ = (Math.random() - 0.5) * 0.2;
+
+            const animateChicken = () => {
+                if (!cube.parent) return;
+
+                cube.position.y += velocityY;
+                cube.position.x += (Math.random() - 0.5) * 0.03;
+                cube.rotation.x += rotSpeedX;
+                cube.rotation.y += rotSpeedY;
+                cube.rotation.z += rotSpeedZ;
+
+                // Bounce a bit when hitting "ground"
+                if (cube.position.y < -3) {
+                    velocityY = 0.25;
+                    rotSpeedX *= 0.6;
+                    rotSpeedY *= 0.6;
+                }
+
+                velocityY -= 0.008; // gravity
+
+                // Remove when offscreen
+                if (cube.position.y < -12) {
+                    scene.remove(cube);
+                    activeChickens = activeChickens.filter(c => c !== cube);
+                    return;
+                }
+
+                requestAnimationFrame(animateChicken);
+            };
+
+            animateChicken();
+        }
+
+        function animateThree() {
+            if (renderer) {
+                // Gentle camera bob
+                camera.position.y = Math.sin(Date.now() * 0.0008) * 0.3;
+                renderer.render(scene, camera);
+            }
+            requestAnimationFrame(animateThree);
+        }
+
+        // Keyboard handler
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'a') {
+                createRollingChicken();
+            }
+        });
+
+        // Fullscreen click
         document.body.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Fullscreen error: ${err.message}`);
-                });
+                document.documentElement.requestFullscreen();
             } else {
                 document.exitFullscreen();
             }
         });
 
-        // Initialize purple particles
+        // Resize handler
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            if (camera && renderer) {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+        });
+
+        // Init everything
         window.addEventListener('load', () => {
             resizeCanvas();
             animateParticles();
+            initThree();
+            animateThree();
+            
+            // Optional: spawn one on load for demo
+            // setTimeout(() => createRollingChicken(), 800);
         });
-
-        window.addEventListener('resize', resizeCanvas);
-
-        // Real-time particle emitter tracking along the text wipe line
-        setTimeout(() => {
-            const container = document.getElementById('wipeContainer');
-            const totalDuration = 4000; // Matches CSS .pitch-paragraph wipe animation time (4s)
-            const tickRate = 35; // Spawn frequency in ms
-            const startTime = Date.now();
-           
-            const emitter = setInterval(() => {
-                const elapsed = Date.now() - startTime;
-                if (elapsed >= totalDuration) {
-                    clearInterval(emitter);
-                    return;
-                }
-               
-                // Track percentage completion
-                const linearProgress = elapsed / totalDuration;
-               
-                // Approximate the cubic-bezier curve shape mathematically to align particles directly on the leading wipe edge
-                const easeProgress = 1 - Math.pow(1 - linearProgress, 3);
-                const completeX = easeProgress * 100;
-               
-                // Spawn small grouping clusters per interval frame
-                for (let i = 0; i < 4; i++) {
-                    const spark = document.createElement('div');
-                    spark.className = 'roblox-particle';
-                   
-                    // Assign positions across the height boundaries randomly
-                    const randomY = Math.random() * 100;
-                    spark.style.left = `${completeX}%`;
-                    spark.style.top = `${randomY}%`;
-                   
-                    // Color selections matching standard hyper-vibrant Roblox tiers
-                    const sparkColors = ['#ff0055', '#00ffcc', '#9900ff', '#ff9900', '#ffff00', '#ff00ff'];
-                    const chosenColor = sparkColors[Math.floor(Math.random() * sparkColors.length)];
-                    spark.style.background = chosenColor;
-                    spark.style.boxShadow = `0 0 12px ${chosenColor}, 0 0 20px ${chosenColor}`;
-                   
-                    // Scaling adjustments
-                    const radiusSize = Math.random() * 8 + 4;
-                    spark.style.width = `${radiusSize}px`;
-                    spark.style.height = `${radiusSize}px`;
-                   
-                    // Trajectory vectors
-                    const physicsX = (Math.random() - 0.5) * 60;
-                    const physicsY = (Math.random() - 0.6) * 90;
-                    spark.style.setProperty('--pX', `${physicsX}px`);
-                    spark.style.setProperty('--pY', `${physicsY}px`);
-                   
-                    container.appendChild(spark);
-                }
-            }, tickRate);
-        }, 3800); // Start particles roughly when text wipe begins
     </script>
 </body>
 </html>
